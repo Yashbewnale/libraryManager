@@ -49,7 +49,7 @@ export class AddAdminComponent {
         this.toasterMsg = 'Admin successfully registered!'
       }, (error: any) => {
         console.log('ERRORORORORO', error);
-        this.showErrorNotification(error.error.text.message);
+        this.showErrorNotification('User already exists');
       });
     }else{
       this.errorMsg = 'Passwords do not match.'

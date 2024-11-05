@@ -38,7 +38,7 @@ export class LoginComponent {
         }
       },
       (error: any) => {
-        alert(error);
+        this.errorMsg = 'Bad credentials';
       }
     );
   }else{
