@@ -1,1 +1,20 @@
-<p>add-admin works!</p>
+<form class="login-form">
+  <h3 class="pageTitle">Add a new admin</h3>
+  <div class="form-group customInput">
+    <label for="exampleInputEmail1">Username</label>
+    <input name="email" type="email" [(ngModel)]="username" class="form-control" id="exampleInputEmail1"
+      aria-describedby="emailHelp">
+  </div>
+  <div class="form-group customInput">
+    <label for="exampleInputPassword1">Password</label>
+    <input name="password" type="password" [(ngModel)]="password" class="form-control" id="exampleInputPassword1">
+  </div>
+  <div class="form-group customInput">
+    <label for="exampleInputPassword1">Confirm Password</label>
+    <input name="confirmPassword" type="password" [(ngModel)]="confirmPassword" class="form-control"
+      id="exampleInputPassword1">
+  </div>
+  <small class="text-danger" *ngIf="errorMsg.length > 0">{{errorMsg}}</small>
+  <button type="submit" class="btn btn-primary mt-3" (click)="register()"
+    [disabled]="!username || !password || !confirmPassword">Register</button>
+</form>

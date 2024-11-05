@@ -1,0 +1,14 @@
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .customInput{
+        width: 25%;
+    }
+}
+
+.pageTitle{
+    color: #56badb;
+}

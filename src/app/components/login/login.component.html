@@ -1,16 +1,14 @@
 <form class="login-form">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+  <h3 class="pageTitle">Login as Admin</h3>
+  <div class="form-group customInput">
+    <label for="exampleInputEmail1">Username</label>
+    <input name="email" type="email" [(ngModel)]="email" class="form-control" id="exampleInputEmail1"
+      aria-describedby="emailHelp">
   </div>
-  <div class="form-group">
+  <div class="form-group customInput">
     <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <input name="password" type="password" [(ngModel)]="password" class="form-control" id="exampleInputPassword1">
   </div>
-  <!-- <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div> -->
-  <button type="submit" class="btn btn-primary mt-3" (click)="login()">Submit</button>
+  <small class="text-danger" *ngIf="errorMsg.length > 0">{{errorMsg}}</small>
+  <button type="submit" class="btn btn-primary mt-3" (click)="login()" [disabled]="!email || !password">Submit</button>
 </form>

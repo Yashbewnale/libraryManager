@@ -1,52 +1,130 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { ManageInventoryService } from '../../../services/manage-inventory.service';
+import { HttpClientModule } from '@angular/common/http';
+import { PageEvent } from '@angular/material/paginator';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-book-inventory',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule],
+  imports: [MatTableModule, MatPaginatorModule, HttpClientModule, CommonModule],
   templateUrl: './book-inventory.component.html',
-  styleUrl: './book-inventory.component.scss'
+  styleUrl: './book-inventory.component.scss',
+  providers: [ManageInventoryService]
 })
 export class BookInventoryComponent  implements AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  pageSize = 5;
+  bookList: any = [];
+  ELEMENT_DATA: BookData[] = [];
+  enableUpload: boolean = false;
+  fileError: string = '';
+
+
+  constructor(private inventoryService: ManageInventoryService){}
+
+  ngOnInit(){
+    this.getBooks(1, this.pageSize);
+  }
+
+  selectedFile: File | null = null;
+
+  displayedColumns: string[] = ['Book Name', 'Author', 'Quantity'];
+  dataSource = new MatTableDataSource<BookData>(this.bookList);
+  pageSize = 10;
+  totalItems = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    // Set the paginator's range label once here
+    this.paginator._intl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+      const start = page * pageSize + 1;
+      const end = Math.min((page + 1) * pageSize, length);
+      return `${start} - ${end} of ${length}`;
+    };
+
+    // Subscribe to paginator page event
+    this.paginator.page.subscribe(() => {
+      this.getBooks(this.paginator.pageIndex + 1, this.paginator.pageSize);
+    });
+  }
+
+  // onFileSelected(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files[0]) {
+  //     this.selectedFile = input.files[0];
+  //     this.enableUpload = true;
+  //   }
+  // }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const fileExtension = file.name.split('.').pop()?.toLowerCase(); // Get the file extension
+  
+      // Check if the file is an Excel file (xlsx or xls)
+      if (fileExtension === 'xlsx' || fileExtension === 'xls') {
+        this.selectedFile = file;
+        this.enableUpload = true; // Enable upload button
+        this.fileError = ''; // Clear any previous error message
+      } else {
+        this.fileError = 'Please upload a valid Excel file (xlsx or xls).'; // Set error message
+        this.selectedFile = null; // Clear selected file
+        this.enableUpload = false; // Disable upload button
+      }
+    }
+  }
+  
+
+  uploadBooks() {
+    if (!this.selectedFile) {
+      alert("Please select a file first!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+
+    this.inventoryService.uploadBooks(formData).subscribe(res => {
+      console.log(res);
+      setTimeout(()=>{
+        this.getBooks(1, this.pageSize);
+      }, 1000)
+    }, error => {
+      console.log('error',error)
+    })
+  }
+
+  getBooks(page: any, size: any){
+    this.inventoryService.getBooks(page, size).subscribe((res: any) => {
+      this.bookList = res['books'];
+      this.totalItems = res['totalItems'];
+      // this.dataSource = new MatTableDataSource<BookData>(this.bookList);
+      this.dataSource.data = this.bookList;
+      // this.dataSource.paginator = this.paginator;
+      this.paginator.length = this.totalItems;
+
+      this.paginator.pageIndex = page - 1; // Adjust for 0-based index
+      this.paginator.pageSize = size;
+      console.log('books', res);
+    }, error => {
+      console.log('error', error)
+    })
+  }
+
+  onPageChange(event: PageEvent){
+    console.log("Page Index:", event.pageIndex);
+    console.log("Page Size:", event.pageSize);
+    console.log("Length:", event.length);
+    this.getBooks(event.pageIndex + 1, event.pageSize);
   }
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+export interface BookData {
+  'Book Name': string;
+  'Author': number;
+  'Quantity': number;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
-];

@@ -1,43 +1,52 @@
-<div class="addBooksBtn mt-3 mb-5 me-5">
-    <form>
-        <div class="form-group">
-          <label for="exampleFormControlFile1">Add books</label>
-          <input type="file" class="form-control-file" id="exampleFormControlFile1">
-        </div>
-    </form>
+<div class="uploadContaiener container">
+    <h4 class="pageTitle">Book inventory table</h4>
+    <div class="addBooksBtn">
+        <form class="d-flex formContainer justify-content-between">
+            <div class="form-group">
+              <label for="file-upload" class="custom-file-upload">
+                Upload Books
+              </label>
+              <input type="file" id="file-upload" class="file-input" (change)="onFileSelected($event)">
+            </div>
+            <button class="btn btn-primary ml-2" [disabled]="!enableUpload" (click)="uploadBooks()">Upload</button>
+        </form>
+        <div *ngIf="fileError" class="text-danger">{{ fileError }}</div> <!-- Error message -->
+        <p *ngIf="selectedFile" class="text-info">{{selectedFile.name}}</p>
+    </div>
 </div>
 
-<div class="mat-elevation-z8 container">
+<div class="mat-elevation-z8 mt-3 container">
     <table mat-table [dataSource]="dataSource">
 
         <!-- Position Column -->
-        <ng-container matColumnDef="position">
+        <!-- <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef> No. </th>
             <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container> -->
+
+        <!-- Book name -->
+        <ng-container matColumnDef="Book Name">
+            <th mat-header-cell *matHeaderCellDef> Book Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
         </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <!-- author Column -->
+        <ng-container matColumnDef="Author">
+            <th mat-header-cell *matHeaderCellDef> Author </th>
+            <td mat-cell *matCellDef="let element"> {{element.author}} </td>
         </ng-container>
 
-        <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-            <th mat-header-cell *matHeaderCellDef> Weight </th>
-            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef> Symbol </th>
-            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        <!-- qty Column -->
+        <ng-container matColumnDef="Quantity">
+            <th mat-header-cell *matHeaderCellDef> Quantity </th>
+            <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="pageSize" showFirstLastButtons aria-label="Select page of periodic elements">
+    <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50]" [pageSize]="pageSize"
+    [length]="totalItems" (page)="onPageChange($event)" showFirstLastButtons aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>
