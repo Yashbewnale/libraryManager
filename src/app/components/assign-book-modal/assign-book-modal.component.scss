@@ -1,0 +1,29 @@
+.spinner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.assignBookContainer{
+    padding: 40px;
+}
+
+.actionBtns{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+
+.mat-mdc-form-field{
+    width: 100% !important;
+    margin-top: 25px !important;
+}
+
+.authorName{
+    // italics text
+    font-style: italic;
+}

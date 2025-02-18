@@ -12,8 +12,8 @@ export class AuthServiceService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  login(username: string, password: string): any {
-    return this.http.post(`${this.uri}/adminLogin`, { username: username, password: password });
+  login(username: string, password: string, isAdmin:boolean): any {
+    return this.http.post(`${this.uri}/userLogin`, { username: username, password: password, isAdmin: isAdmin });
   }
 
   // Check if the user is logged in

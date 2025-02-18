@@ -5,6 +5,7 @@ import { BookInventoryComponent } from './components/admin-dashboard/book-invent
 import { AddAdminComponent } from './components/admin-dashboard/add-admin/add-admin.component';
 import { RegisterStudentComponent } from './components/admin-dashboard/register-student/register-student.component';
 import { authGuard } from './guards/auth.guard';
+import { ShowDueTodayComponentComponent } from './components/show-due-today-component/show-due-today-component.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,11 @@ export const routes: Routes = [
         component: AddAdminComponent,
         canActivate: [authGuard]
 
+    },
+    {
+        path: 'dashboard/dueToday',
+        component: ShowDueTodayComponentComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'dashboard/regStudent',

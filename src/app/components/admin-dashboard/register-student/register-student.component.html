@@ -1,1 +1,24 @@
-<p>register-student works!</p>
+<form class="login-form">
+    <h3 class="pageTitle">Add a Student</h3>
+    <div class="form-group customInput">
+      <label for="exampleInputEmail1">Student username</label>
+      <input name="email" type="email" [(ngModel)]="username" class="form-control" id="exampleInputEmail1"
+        aria-describedby="emailHelp">
+    </div>
+    <div class="form-group customInput">
+      <label for="exampleInputEmail1">Student Full name</label>
+      <input name="fullName" type="fullName" [(ngModel)]="fullName" class="form-control" id="exampleInputEmail1"
+        aria-describedby="emailHelp">
+    </div>
+    <div class="form-group customInput">
+      <label for="exampleInputPassword1">Student email</label>
+      <input name="email" type="email" [(ngModel)]="email" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div class="form-group customInput">
+      <label for="exampleInputPassword1">Student Phone</label>
+      <input name="phone" type="phone" [(ngModel)]="phone" class="form-control" id="exampleInputPassword1">
+    </div>
+    <small class="text-danger" *ngIf="errorMsg.length > 0">{{errorMsg}}</small>
+    <button type="submit" class="btn btn-primary mt-3" (click)="registerStudent()"
+      [disabled]="!username || !email">Register Student</button>
+  </form>

@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Book Details</h2>
+
+<mat-dialog-content>
+  <div class="book-details">
+    <div class="bookRow">
+        <p><strong>Book Name:</strong> {{ bookForInfo.bookName }}</p>
+    </div>
+    <div class="bookRow">
+        <p><strong>Author:</strong> {{ bookForInfo.author }}</p>
+    </div>
+    <div class="bookRow">
+        <p><strong>ISBN:</strong> {{ bookForInfo.isbn }}</p>
+    </div>
+    <div class="bookRow">
+        <p><strong>Total Books:</strong> {{ bookForInfo.total }}</p>
+    </div>
+    <div class="bookRow">
+        <p><strong>Assigned Books:</strong> {{ bookForInfo.assigned }}</p>
+    </div>
+    <div class="bookRow">
+        <p><strong>Available Books:</strong> {{ bookForInfo.available }}</p>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="btn btn-secondary mb-4" mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

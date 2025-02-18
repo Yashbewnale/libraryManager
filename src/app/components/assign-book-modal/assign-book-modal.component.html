@@ -1,0 +1,37 @@
+<div *ngIf="isLoading" class="spinner">
+    <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="!isLoading" class="form-container assignBookContainer">
+    <h2 mat-dialog-title>Assign {{bookToAssign.book.bookName}} book. - <small class="authorName">Author: {{bookToAssign.book.author}}</small></h2>
+    <!-- <small>Author: {{bookToAssign.book.author}}</small> -->
+    <form class="example-form">
+        <input type="text"
+               placeholder="Search for a student"
+               [formControl]="control"
+               [matAutocomplete]="auto"
+               class="form-control">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+            <mat-option *ngFor="let student of filteredStudents | async" [value]="student">{{student.fullName}}</mat-option>
+        </mat-autocomplete>
+      </form>
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Choose due date</mat-label>
+        <input [(ngModel)]="dueDate" matInput class="form-control" [matDatepickerFilter]="myFilter" [matDatepicker]="picker" [min]="today">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
+    <mat-dialog-actions class="actionBtns">
+      <button class="btn btn-secondary" (click)="dialogRef.close(false)">
+        Close
+      </button>
+      <button class="btn btn-primary" [disabled]="!control.value || !dueDate" (click)="submit()">
+        Submit
+      </button>
+      <button class="btn btn-info" (click)="registerStudent()">
+        Register Student
+      </button>
+    </mat-dialog-actions>
+</div>
+  

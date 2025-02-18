@@ -10,7 +10,8 @@ export class RegisterUsersService {
 
   constructor(private http: HttpClient) { }
 
-  registerAdmin(username: string, password:string): any{
-    return this.http.post(`${this.uri}/registerAdmin`, {username: username, password: password});
+  registerUser(username: string, password:string, fullName: string, email:string, phone:string, isAdmin: string): any{
+    let uType = isAdmin === 'admin' ? true : false;
+    return this.http.post(`${this.uri}/registerUser`, {username: username, password: password, fullName:fullName, email: email, phone: phone, isAdmin: uType});
   }
 }

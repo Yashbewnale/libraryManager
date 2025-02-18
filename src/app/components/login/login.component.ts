@@ -17,6 +17,8 @@ export class LoginComponent {
   email:string = '';
   password: string = '';
   errorMsg: string = '';
+  studentId: string = '';
+  isAdmin: boolean = true;
   constructor(private router: Router, private authService: AuthServiceService){
 
   }
@@ -25,11 +27,19 @@ export class LoginComponent {
     localStorage.clear();
   }
 
+  changeLogin(loginType: string){
+    if(loginType === 'admin'){
+      this.isAdmin = true;
+    }else{
+      this.isAdmin = false;
+    }
+  }
+
   login(){
     // call backend
-    if(this.email && this.password){
+    if(this.email && this.password && this.isAdmin){
       this.errorMsg = '';
-      this.authService.login(this.email, this.password).subscribe((res: { message: any, token: any; }) => {
+      this.authService.login(this.email, this.password, this.isAdmin).subscribe((res: { message: any, token: any; }) => {
         console.log(res.token)
         if(res.token){
           localStorage.setItem('token', res.token);
@@ -41,7 +51,24 @@ export class LoginComponent {
         this.errorMsg = 'Bad credentials';
       }
     );
-  }else{
+  }else if (this.studentId && this.password && this.isAdmin){
+    this.errorMsg = '';
+    this.authService.login(this.studentId, this.password, this.isAdmin).subscribe((res: { message: any, token: any; }) => {
+      console.log(res.token)
+      if(res.token){
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('isLoggedIn', 'true');
+        this.router.navigate(['/dashboard/inventory']);
+      }
+    },
+    (error: any) => {
+      this.errorMsg = 'Bad credentials';
+    }
+  );
+
+  }
+    
+    else{
     this.errorMsg = 'Please enter correct credentials';
   }
   }

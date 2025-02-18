@@ -5,31 +5,45 @@ import { ManageInventoryService } from '../../../services/manage-inventory.servi
 import { HttpClientModule } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { AssignBookModalComponent } from '../../assign-book-modal/assign-book-modal.component';
+import { AssignBookService } from '../../../services/assign-book.service';
+import { NotificationService } from '../../../services/notification.service';
+import { BookInfoComponent } from '../../book-info/book-info.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-book-inventory',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, HttpClientModule, CommonModule],
+  imports: [MatTableModule, MatPaginatorModule, HttpClientModule, CommonModule, AssignBookModalComponent, MatTooltipModule, BookInfoComponent],
   templateUrl: './book-inventory.component.html',
   styleUrl: './book-inventory.component.scss',
-  providers: [ManageInventoryService]
+  providers: [ManageInventoryService, AssignBookService, NotificationService]
 })
 export class BookInventoryComponent  implements AfterViewInit {
   bookList: any = [];
   ELEMENT_DATA: BookData[] = [];
   enableUpload: boolean = false;
   fileError: string = '';
+  dataFromDialog: any;
 
 
-  constructor(private inventoryService: ManageInventoryService){}
+  constructor(
+    private inventoryService: ManageInventoryService,
+    private dialog: MatDialog,
+    private assignBookService: AssignBookService,
+    private notificationService: NotificationService
+  ){}
 
   ngOnInit(){
     this.getBooks(1, this.pageSize);
   }
 
+
+
   selectedFile: File | null = null;
 
-  displayedColumns: string[] = ['Book Name', 'Author', 'Quantity'];
+  displayedColumns: string[] = ['ISBN','Book Name', 'Author', 'Available Quantity', 'Action'];
   dataSource = new MatTableDataSource<BookData>(this.bookList);
   pageSize = 10;
   totalItems = 0;
@@ -49,14 +63,6 @@ export class BookInventoryComponent  implements AfterViewInit {
       this.getBooks(this.paginator.pageIndex + 1, this.paginator.pageSize);
     });
   }
-
-  // onFileSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files[0]) {
-  //     this.selectedFile = input.files[0];
-  //     this.enableUpload = true;
-  //   }
-  // }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -120,11 +126,55 @@ export class BookInventoryComponent  implements AfterViewInit {
     console.log("Length:", event.length);
     this.getBooks(event.pageIndex + 1, event.pageSize);
   }
+
+
+  showSuccessNotification() {
+    this.notificationService.openSnackBar('Book assigned successfully!', 'Close', 'success');
+  }
+
+  showErrorNotification(message: string) {
+    this.notificationService.openSnackBar(message, 'Close', 'error');
+  }
+
+  assignBook(book: any){
+    console.log('book', book);
+    const dialogRef = this.dialog.open(AssignBookModalComponent, {
+      width: '550px',
+      height: '500px',
+      data: { book: book }
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log('data from dialog', data);
+      if (data.clicked === 'submit') {
+        this.assignBookService.assignBookToUser(book.isbn,data.student._id, data.dueDate).subscribe((res:any) => {
+          console.log('book assigned',res);
+          this.showSuccessNotification();
+          this.getBooks(1, this.pageSize);
+        }, (error: any) => {
+          console.log('error', error);
+        this.showErrorNotification(error.error.error);
+        });
+      }
+    });
+  }
+
+  showBookInfo(book: any){
+    console.log('book', book);
+    const dialogRef = this.dialog.open(BookInfoComponent, {
+      width: '550px',
+      height: '500px',
+      data: { book: book }
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+    });
+  }
 }
 
 export interface BookData {
   'Book Name': string;
   'Author': number;
   'Quantity': number;
+  'ISBN': string;
 }
 

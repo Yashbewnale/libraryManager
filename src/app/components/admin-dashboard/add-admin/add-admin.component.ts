@@ -5,6 +5,7 @@ import { RegisterUsersService } from '../../../services/register-users.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { NotificationService } from '../../../services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-admin',
@@ -27,7 +28,8 @@ export class AddAdminComponent {
 
   constructor(
     private userService: RegisterUsersService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ){}
 
   showSuccessNotification() {
@@ -43,10 +45,12 @@ export class AddAdminComponent {
     if(this.password === this.confirmPassword){
       this.errorMsg = '';
       this.toasterMsg = '';
-      this.userService.registerAdmin(this.username, this.password).subscribe((res: any) => {
+      this.userService.registerUser(this.username, this.password, '', '', '', 'admin').subscribe((res: any) => {
         console.log('admin reg success',res);
         this.showSuccessNotification();
         this.toasterMsg = 'Admin successfully registered!'
+        this.router.navigate(['dashboard/inventory']);
+
       }, (error: any) => {
         console.log('ERRORORORORO', error);
         this.showErrorNotification('User already exists');

@@ -21,4 +21,12 @@ export class ManageInventoryService {
 
     return this.http.get(`${this.URI}/getBooks`, { params });
   }
+
+  getAssignedBooks(){
+    return this.http.get(`${this.URI}/assignedBooks`);
+  }
+
+  returnBook(isbn: string, studentId: string){
+    return this.http.post(`${this.URI}/returnBook`, {isbn: isbn, studentId: studentId});
+  }
 }
