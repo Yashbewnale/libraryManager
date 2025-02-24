@@ -8,6 +8,7 @@ import { authGuard } from './guards/auth.guard';
 import { ShowDueTodayComponentComponent } from './components/show-due-today-component/show-due-today-component.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 import { studentGuard } from './guards/student.guard';
+import { AllStudentsComponent } from './components/all-students/all-students.component';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,11 @@ export const routes: Routes = [
         path: 'dashboard/studentDashboard',
         component: StudentDashboardComponent,
         canActivate: [studentGuard]
+    },
+    {
+        path: 'dashboard/allStudents',
+        component: AllStudentsComponent,
+        canActivate: [authGuard]
     },
     {
         path: '',
