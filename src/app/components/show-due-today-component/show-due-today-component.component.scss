@@ -5,3 +5,14 @@ table{
 .pageTitle{
     color: #56badb;
 } 
+
+.searchBooksContainer{
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    width: 50%;
+    margin-bottom: 20px;
+}
+.returnBookIcon{
+    cursor: pointer;
+}

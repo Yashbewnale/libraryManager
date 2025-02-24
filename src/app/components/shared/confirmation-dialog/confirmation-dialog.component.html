@@ -1,6 +1,11 @@
 <div class="dialogContainer">
     <h6>{{message}}</h6>
-
+    @if (for === 'deleteBook'){
+        <small class="text-danger">This is permanent and cannot be reversed!</small>
+    }
+    @if (for === 'returnBook'){
+        <small class="text-danger">This is permanent and cannot be reversed!</small>
+    }
     <div class="btnContainer">
         <button class="btn btn-secondary" tabindex="-1" (click)="close()">{{cancelButtonText}}</button>
         <button class="btn btn-primary ml-3" (click)="onConfirmClick()">{{confirmButtonText}}</button>

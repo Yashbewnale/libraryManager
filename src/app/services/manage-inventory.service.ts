@@ -29,4 +29,17 @@ export class ManageInventoryService {
   returnBook(isbn: string, studentId: string){
     return this.http.post(`${this.URI}/returnBook`, {isbn: isbn, studentId: studentId});
   }
+
+  searchBook(searchText: string){
+    return this.http.get(`${this.URI}/searchBook`, { params: {isbn: searchText}});
+  }
+
+  searchAssignedBook(searchText: string){
+    return this.http.get(`${this.URI}/searchAssignedBook`, { params: {isbn: searchText}});
+  }
+
+  deleteBook(isbn: string){
+    return this.http.delete(`${this.URI}/deleteBook`, { params: {isbn: isbn}});
+  }
+
 }

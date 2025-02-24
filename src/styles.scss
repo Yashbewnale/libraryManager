@@ -3,7 +3,34 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+body {
+    background-color: #EAF6FF;
+    background-size: cover; /* Ensures the image covers the entire page */
+    background-position: center; /* Centers the image */
+    background-attachment: fixed; /* Keeps the image in place when scrolling */
+    margin: 0; /* Removes default margin */
+    height: 100vh; /* Ensures the body takes up full viewport height */
+  }
+
 
 ::ng-deep .mdc-dialog--open .mat-mdc-dialog-surface, .mdc-dialog--closing .mat-mdc-dialog-surface{
     padding: 40px !important;
+}
+
+
+.btn-primary{
+    background-color: #4A90E2 !important;
+}
+
+
+.btn-secondary{
+    background-color: #3E4E55 !important;
+}
+
+p{
+    color: #2D2D2D !important;
+}
+
+.form-control{
+    border: 1px solid #a09e9e !important;
 }

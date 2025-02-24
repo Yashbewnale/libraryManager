@@ -1,67 +1,105 @@
-<div class="uploadContaiener container">
-    <h4 class="pageTitle">Book inventory table</h4>
-    <div class="addBooksBtn">
-        <form class="d-flex formContainer justify-content-between">
-            <div class="form-group">
-              <label for="file-upload" class="custom-file-upload">
-                Upload Books
-              </label>
-              <input type="file" id="file-upload" class="file-input" (change)="onFileSelected($event)">
-            </div>
-            <button class="btn btn-primary ml-2" [disabled]="!enableUpload" (click)="uploadBooks()">Upload</button>
-        </form>
-        <div *ngIf="fileError" class="text-danger">{{ fileError }}</div> <!-- Error message -->
-        <p *ngIf="selectedFile" class="text-info">{{selectedFile.name}}</p>
+<div class="container">
+    <div class="uploadContaiener">
+        <h4 class="pageTitle">Book inventory table</h4>
+
+        <div class="addBooksBtn">
+            <form class="d-flex formContainer justify-content-between">
+                <div class="form-group">
+                    <label for="file-upload" class="custom-file-upload">
+                        Upload Books
+                    </label>
+                    <input type="file" id="file-upload" class="file-input" (change)="onFileSelected($event)">
+                </div>
+                <button class="btn btn-primary ml-2" [disabled]="!enableUpload" (click)="uploadBooks()">Upload</button>
+            </form>
+            <div *ngIf="fileError" class="text-danger">{{ fileError }}</div> <!-- Error message -->
+            <p *ngIf="selectedFile" class="text-info">{{selectedFile.name}}</p>
+        </div>
     </div>
-</div>
+    <div class="searchBooksContainer">
+        <input type="text" class="form-control" placeholder="Search books" [(ngModel)]="searchText">
+        <button class="btn btn-primary ml-2" (click)="searchBooks()">Search</button>
+        <button class="btn btn-secondary ml-2" (click)="resetSearch()">Reset</button>
+    </div>
 
-<div class="mat-elevation-z8 mt-3 container">
-    <table mat-table [dataSource]="dataSource">
+    <div class="mat-elevation-z8 mt-3">
+        <table mat-table [dataSource]="dataSource">
 
-        <!-- ISBN Column -->
-        <ng-container matColumnDef="ISBN">
-            <th mat-header-cell *matHeaderCellDef> ISBN </th>
-            <td mat-cell *matCellDef="let element"> {{element.isbn}} </td>
-        </ng-container>
+            <!-- ISBN Column -->
+            <ng-container matColumnDef="ISBN">
+                <th mat-header-cell *matHeaderCellDef> ISBN </th>
+                <td mat-cell *matCellDef="let element"> {{element.isbn}} </td>
+            </ng-container>
 
-        <!-- Book name -->
-        <ng-container matColumnDef="Book Name">
-            <th mat-header-cell *matHeaderCellDef> Book Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
-        </ng-container>
+            <!-- Book name -->
+            <ng-container matColumnDef="Book Name">
+                <th mat-header-cell *matHeaderCellDef> Book Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
+            </ng-container>
 
-        <!-- author Column -->
-        <ng-container matColumnDef="Author">
-            <th mat-header-cell *matHeaderCellDef> Author </th>
-            <td mat-cell *matCellDef="let element"> {{element.author}} </td>
-        </ng-container>
+            <!-- author Column -->
+            <ng-container matColumnDef="Author">
+                <th mat-header-cell *matHeaderCellDef> Author </th>
+                <td mat-cell *matCellDef="let element"> {{element.author}} </td>
+            </ng-container>
 
-        <!-- qty Column -->
-        <ng-container matColumnDef="Available Quantity">
-            <th mat-header-cell *matHeaderCellDef> Available Quantity </th>
-            <td mat-cell *matCellDef="let element"> {{element.available}} </td>
-        </ng-container>
+            <!-- qty Column -->
+            <ng-container matColumnDef="Available Quantity">
+                <th mat-header-cell *matHeaderCellDef> Available Quantity </th>
+                <td mat-cell *matCellDef="let element"> {{element.available}} </td>
+            </ng-container>
 
-        <!-- assign book -->
-        <ng-container matColumnDef="Action">
-            <th mat-header-cell *matHeaderCellDef> Action </th>
-            <td mat-cell *matCellDef="let element"> 
-            <span matTooltip="Book details"
-            matTooltipPosition="above" class="assignBookIcon" (click)="showBookInfo(element)">
-                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75ZM12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z" fill="#000000"></path> </g></svg>
-            </span>
-            <span matTooltip="Assign book to student"
-            matTooltipPosition="above" class="assignBookIcon" (click)="assignBook(element)">
-                <svg fill="#000000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 328 328" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="XMLID_334_"> <path id="XMLID_337_" d="M177.75,64.001C177.75,29.4,149.601,1.25,115,1.25c-34.602,0-62.75,28.15-62.75,62.751 S80.398,126.75,115,126.75C149.601,126.75,177.75,98.602,177.75,64.001z"></path> <path id="XMLID_338_" d="M228.606,181.144c-5.858-5.857-15.355-5.858-21.214-0.001c-5.857,5.857-5.857,15.355,0,21.214 l19.393,19.396l-19.393,19.391c-5.857,5.857-5.857,15.355,0,21.214c2.93,2.929,6.768,4.394,10.607,4.394 c3.838,0,7.678-1.465,10.605-4.393l30-29.998c2.813-2.814,4.395-6.629,4.395-10.607c0-3.978-1.58-7.793-4.394-10.607 L228.606,181.144z"></path> <path id="XMLID_340_" d="M223,116.75c-34.488,0-65.145,16.716-84.298,42.47c-7.763-1.628-15.694-2.47-23.702-2.47 c-63.412,0-115,51.589-115,115c0,8.284,6.715,15,15,15h125.596c19.246,24.348,49.03,40,82.404,40c57.896,0,105-47.103,105-105 C328,163.854,280.896,116.75,223,116.75z M223,296.75c-41.356,0-75-33.645-75-75s33.644-75,75-75c41.354,0,75,33.645,75,75 S264.354,296.75,223,296.75z"></path> </g> </g></svg>
-            </span>
-               </td>
-        </ng-container>
+            <!-- assign book -->
+            <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                    <span matTooltip="Book details" matTooltipPosition="above" class="assignBookIcon"
+                        (click)="showBookInfo(element)">
+                        <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75ZM12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                                    fill="#3273a8"></path>
+                            </g>
+                        </svg>
+                    </span>
+                    <span matTooltip="Assign book to student" matTooltipPosition="above" class="assignBookIcon"
+                        (click)="assignBook(element)">
+                        <svg fill="#000000" height="24px" width="24px" version="1.1" id="Layer_1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 328 328" xml:space="preserve">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <g id="XMLID_334_">
+                                    <path id="XMLID_337_"
+                                        d="M177.75,64.001C177.75,29.4,149.601,1.25,115,1.25c-34.602,0-62.75,28.15-62.75,62.751 S80.398,126.75,115,126.75C149.601,126.75,177.75,98.602,177.75,64.001z">
+                                    </path>
+                                    <path id="XMLID_338_"
+                                        d="M228.606,181.144c-5.858-5.857-15.355-5.858-21.214-0.001c-5.857,5.857-5.857,15.355,0,21.214 l19.393,19.396l-19.393,19.391c-5.857,5.857-5.857,15.355,0,21.214c2.93,2.929,6.768,4.394,10.607,4.394 c3.838,0,7.678-1.465,10.605-4.393l30-29.998c2.813-2.814,4.395-6.629,4.395-10.607c0-3.978-1.58-7.793-4.394-10.607 L228.606,181.144z">
+                                    </path>
+                                    <path id="XMLID_340_"
+                                        d="M223,116.75c-34.488,0-65.145,16.716-84.298,42.47c-7.763-1.628-15.694-2.47-23.702-2.47 c-63.412,0-115,51.589-115,115c0,8.284,6.715,15,15,15h125.596c19.246,24.348,49.03,40,82.404,40c57.896,0,105-47.103,105-105 C328,163.854,280.896,116.75,223,116.75z M223,296.75c-41.356,0-75-33.645-75-75s33.644-75,75-75c41.354,0,75,33.645,75,75 S264.354,296.75,223,296.75z">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+                    </span>
+                    <span matTooltip="Delete this book" matTooltipPosition="above" class="assignBookIcon" (click)="deleteBook(element)">
+                        <svg width="24px" height="24px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#a83232"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#a83232" d="M352 192V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64H96a32 32 0 0 1 0-64h256zm64 0h192v-64H416v64zM192 960a32 32 0 0 1-32-32V256h704v672a32 32 0 0 1-32 32H192zm224-192a32 32 0 0 0 32-32V416a32 32 0 0 0-64 0v320a32 32 0 0 0 32 32zm192 0a32 32 0 0 0 32-32V416a32 32 0 0 0-64 0v320a32 32 0 0 0 32 32z"></path></g></svg>
+                    </span>
+                </td>
+            </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50]" [pageSize]="pageSize"
-    [length]="totalItems" (page)="onPageChange($event)" showFirstLastButtons aria-label="Select page of periodic elements">
-    </mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50]" [pageSize]="pageSize" [length]="totalItems"
+            (page)="onPageChange($event)" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
 </div>

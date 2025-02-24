@@ -10,7 +10,11 @@ export class AssignBookService {
     private http: HttpClient
   ) { }
 
-  assignBookToUser(bookIsbn: string, userId: string, dueDate: any): any{
-    return this.http.post(`${this.uri}/assignBook`, {isbn: bookIsbn, studentId: userId, dueDate: dueDate});
+  assignBookToUser(bookIsbn: string, userId: string, dueDate: any, studentUsername: string): any{
+    return this.http.post(`${this.uri}/assignBook`, {isbn: bookIsbn, studentId: userId, dueDate: dueDate, studentUsername: studentUsername});
+  }
+
+  getUserAssignedBooks(userId: string): any{
+    return this.http.get(`${this.uri}/searchStudent/${userId}`);
   }
 }

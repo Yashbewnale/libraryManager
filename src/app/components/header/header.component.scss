@@ -9,7 +9,11 @@
 }
 
 .navbar .nav-link.active {
-    color: #007bff;
+    color: #003F87;
     font-weight: 500;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #003F87;
+}
+
+.logoutBtn{
+    cursor: pointer;
 }

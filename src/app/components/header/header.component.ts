@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,11 +12,17 @@ import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confi
   imports: [CommonModule, HttpClientModule, RouterModule, MatDialogModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  providers: [AuthServiceService]
+  providers: [AuthServiceService],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
+  isAdmin!: boolean;
+  userName: any;
+
+  ngOnInit() { }
+
   isLoggedIn!: string | null;
-  constructor(private router: Router, public authService: AuthServiceService, private dialog: MatDialog) { }
+  constructor(private router: Router, private cdr: ChangeDetectorRef, public authService: AuthServiceService, private dialog: MatDialog) { }
 
   logout() {
     this.authService.logout();
@@ -29,7 +35,8 @@ export class HeaderComponent {
         buttonText: {
           ok: 'Yes',
           cancel: 'No'
-        }
+        },
+        for: 'logout'
       }
     });
 

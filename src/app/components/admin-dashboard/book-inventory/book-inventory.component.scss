@@ -52,3 +52,10 @@ table {
     cursor: pointer;
     margin-right: 10px;
 }
+
+.searchBooksContainer{
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    width: 50%;
+}

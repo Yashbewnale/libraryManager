@@ -6,6 +6,8 @@ import { AddAdminComponent } from './components/admin-dashboard/add-admin/add-ad
 import { RegisterStudentComponent } from './components/admin-dashboard/register-student/register-student.component';
 import { authGuard } from './guards/auth.guard';
 import { ShowDueTodayComponentComponent } from './components/show-due-today-component/show-due-today-component.component';
+import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
+import { studentGuard } from './guards/student.guard';
 
 export const routes: Routes = [
     {
@@ -38,6 +40,11 @@ export const routes: Routes = [
         path: 'dashboard/regStudent',
         component: RegisterStudentComponent,
         canActivate: [authGuard]
+    },
+    {
+        path: 'dashboard/studentDashboard',
+        component: StudentDashboardComponent,
+        canActivate: [studentGuard]
     },
     {
         path: '',

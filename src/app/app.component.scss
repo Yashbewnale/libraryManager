@@ -1,20 +1,21 @@
 .footer{
-    // position: absolute;
-    // bottom: 0;
-    background: lightblue;
+    position: absolute;
+    bottom: 0;
+    background: #4A90E2;
     width: 100%;
-    // margin-top: 200px;
 }
 
 .header{
-    background: lightblue !important;
-    // position: fixed;
-    // top: 0;
+    background: #4A90E2 !important;
 }
 
 .appContent{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     height: 100vh;
 }
+.appContentInner{
+    margin-top: 20px;
+}
+

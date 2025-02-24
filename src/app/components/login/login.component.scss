@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 15px;
 }
 
 .customInput{
@@ -27,4 +28,30 @@
 
 #student-tab{
     cursor: pointer;
+}
+
+.nav-tabs .nav-link {
+    background-color: #EAF6FF; /* Default background color */
+    color: #2D2D2D; /* Default text color */
+    border: 1px solid #4A90E2; /* Border for better separation */
+    margin-right: 5px; /* Space between tabs */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .nav-tabs .nav-link.active {
+    background-color: #4A90E2; /* Active tab background */
+    color: #FFFFFF; /* Active tab text color */
+    border-color: #003F87; /* Make border darker for active */
+  }
+  
+  .nav-tabs .nav-link:hover {
+    background-color: #256FBF; /* Hover effect background */
+    color: #FFFFFF; /* Hover text color */
+  }
+  
+
+.loginContainer{
+    border: 1px solid #4A90E2;
+    border-radius: 6px;
+    padding: 50px;
 }

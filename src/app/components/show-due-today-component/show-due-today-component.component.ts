@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificationService } from '../../services/notification.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-show-due-today-component',
   standalone: true,
-  imports: [CommonModule, DatePipe, MatTooltipModule],
+  imports: [CommonModule,FormsModule, ReactiveFormsModule, DatePipe, MatTooltipModule],
   templateUrl: './show-due-today-component.component.html',
   styleUrl: './show-due-today-component.component.scss',
   providers: [ManageInventoryService]
@@ -17,6 +18,8 @@ import { NotificationService } from '../../services/notification.service';
 
 export class ShowDueTodayComponentComponent {
   assignedBooks: any = [];
+  searchText: string = '';
+  today = new Date();
 
   constructor(private inventoryService: ManageInventoryService, private notificationService: NotificationService) {
 
@@ -57,5 +60,23 @@ export class ShowDueTodayComponentComponent {
         console.log('error', error);
       }
       );
+    }
+
+    resetSearch(){
+      this.searchText = '';
+      this.getAssignedBooks();
+    }
+  
+    searchBooks(){
+      console.log('search', this.searchText);
+      this.inventoryService.searchAssignedBook(this.searchText).subscribe((res: any) => {
+        if(res['books'].length === 0){
+          this.showErrorNotification('No books found');
+          return;
+        }
+        this.assignedBooks = res.books;
+      }, (error: any) => {
+        console.log('error', error);
+      })
     }
 }

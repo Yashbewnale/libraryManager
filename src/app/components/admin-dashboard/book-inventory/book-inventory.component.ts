@@ -11,11 +11,13 @@ import { AssignBookService } from '../../../services/assign-book.service';
 import { NotificationService } from '../../../services/notification.service';
 import { BookInfoComponent } from '../../book-info/book-info.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-book-inventory',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, HttpClientModule, CommonModule, AssignBookModalComponent, MatTooltipModule, BookInfoComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTableModule, MatPaginatorModule, HttpClientModule, CommonModule, AssignBookModalComponent, MatTooltipModule, BookInfoComponent,ConfirmationDialogComponent],
   templateUrl: './book-inventory.component.html',
   styleUrl: './book-inventory.component.scss',
   providers: [ManageInventoryService, AssignBookService, NotificationService]
@@ -26,6 +28,7 @@ export class BookInventoryComponent  implements AfterViewInit {
   enableUpload: boolean = false;
   fileError: string = '';
   dataFromDialog: any;
+  searchText: string = '';
 
 
   constructor(
@@ -147,7 +150,7 @@ export class BookInventoryComponent  implements AfterViewInit {
     dialogRef.afterClosed().subscribe((data) => {
       console.log('data from dialog', data);
       if (data.clicked === 'submit') {
-        this.assignBookService.assignBookToUser(book.isbn,data.student._id, data.dueDate).subscribe((res:any) => {
+        this.assignBookService.assignBookToUser(book.isbn,data.student._id, data.dueDate, data.student.username).subscribe((res:any) => {
           console.log('book assigned',res);
           this.showSuccessNotification();
           this.getBooks(1, this.pageSize);
@@ -169,6 +172,65 @@ export class BookInventoryComponent  implements AfterViewInit {
     dialogRef.afterClosed().subscribe((data) => {
     });
   }
+
+  resetSearch(){
+    this.searchText = '';
+    this.getBooks(1, this.pageSize)
+  }
+
+  searchBooks(){
+    console.log('search', this.searchText);
+    this.inventoryService.searchBook(this.searchText).subscribe((res: any) => {
+      if(res['books'].length === 0){
+        this.showErrorNotification('No books found');
+        return;
+      }
+      this.bookList = res['books'];
+      this.totalItems = res['totalItems'];
+      this.dataSource.data = this.bookList;
+      this.paginator.length = this.totalItems;
+      this.paginator.pageIndex = 0;
+      this.paginator.pageSize = this.pageSize;
+    }, (error: any) => {
+      console.log('error', error);
+    })
+  }
+
+  deleteBook(book: any){
+    console.log('book', book);
+    if(book.assigned !== 0){
+      this.showErrorNotification('Book is assigned to a student. Cannot delete');
+      return;
+    }
+    this.openConfirmationDialog(book);
+  }
+
+  openConfirmationDialog(book: any) {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          message: 'Are you sure you want to delete this book?',
+          buttonText: {
+            ok: 'Yes',
+            cancel: 'No'
+          },
+          for: 'deleteBook'
+        }
+      });
+      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.inventoryService.deleteBook(book.isbn).subscribe((res: any) => {
+            console.log('book deleted', res);
+            this.notificationService.openSnackBar('Book Deleted successfully!', 'Close', 'success');;
+            this.getBooks(1, this.pageSize);
+          }, (error: any) => {
+            console.log('error', error);
+          })
+        }else{
+  
+        }
+      });
+    }
+  
 }
 
 export interface BookData {
