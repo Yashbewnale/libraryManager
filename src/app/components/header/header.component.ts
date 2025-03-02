@@ -5,11 +5,12 @@ import { AuthServiceService } from '../../services/auth-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterModule, MatDialogModule],
+  imports: [CommonModule, HttpClientModule, RouterModule, MatDialogModule, MatTooltipModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   providers: [AuthServiceService],

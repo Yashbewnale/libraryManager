@@ -14,11 +14,12 @@ table {
         position: absolute;
         top: 30%;
         right: 0;
-        width: 250px;
+        // width: 250px;
     }
 }
 .formContainer{
-    width: 250px;
+    // width: 250px;
+    gap: 10px;
 }
 
 .upload-btn:disabled{
@@ -59,3 +60,15 @@ table {
     gap: 5px;
     width: 50%;
 }
+
+.uploadBooksBtn{
+    position: relative;
+
+    span{
+        position: absolute;
+        right: -4px;
+        top: -5px;
+        cursor: pointer;
+    };
+}
+

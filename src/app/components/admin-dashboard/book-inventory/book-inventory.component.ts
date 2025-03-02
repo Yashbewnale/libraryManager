@@ -102,8 +102,22 @@ export class BookInventoryComponent  implements AfterViewInit {
         this.getBooks(1, this.pageSize);
       }, 1000)
     }, error => {
+      this.notificationService.openSnackBar('Error uploading file or some fields are missing!', 'Close', 'error');
       console.log('error',error)
     })
+  }
+
+  // clear selected file
+  clearFile() {
+    this.selectedFile = null;
+    this.enableUpload = false;
+    this.fileError = '';
+    
+    // Reset the file input element
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
   getBooks(page: any, size: any){
@@ -162,12 +176,25 @@ export class BookInventoryComponent  implements AfterViewInit {
     });
   }
 
+  showFileInfo() {
+    const dialogRef = this.dialog.open(BookInfoComponent, {
+      maxWidth: '50vw',
+      maxHeight: '70vh',
+      height: '100%',
+      width: '100%',
+      data: { for: 'fileInfo' }
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      // Handle any actions after the dialog is closed
+    });
+  }
+
   showBookInfo(book: any){
     console.log('book', book);
     const dialogRef = this.dialog.open(BookInfoComponent, {
       width: '550px',
       height: '500px',
-      data: { book: book }
+      data: { book: book, for: 'bookInfo' }
     });
     dialogRef.afterClosed().subscribe((data) => {
     });

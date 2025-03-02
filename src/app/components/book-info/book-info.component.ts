@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
@@ -5,18 +6,19 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 @Component({
   selector: 'app-book-info',
   standalone: true,
-  imports: [MatDialogModule],
+  imports: [MatDialogModule, CommonModule],
   templateUrl: './book-info.component.html',
   styleUrl: './book-info.component.scss'
 })
 export class BookInfoComponent {
   bookForInfo: any = '';
+  for: any = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: any,
     public dialogRef: MatDialogRef<BookInfoComponent>
   ) {
-    console.log('book received', data);
+    this.for = data.for;
     this.bookForInfo = data.book;
   }
 

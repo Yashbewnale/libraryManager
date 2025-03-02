@@ -3,21 +3,35 @@
         <h4 class="pageTitle">Book inventory table</h4>
 
         <div class="addBooksBtn">
-            <form class="d-flex formContainer justify-content-between">
-                <div class="form-group">
+            <form class="d-flex formContainer justify-content-between g-4">
+                <div class="form-group uploadBooksBtn">
                     <label for="file-upload" class="custom-file-upload">
                         Upload Books
                     </label>
                     <input type="file" id="file-upload" class="file-input" (change)="onFileSelected($event)">
+                    <span (click)="showFileInfo()" matTooltip="Show file format" matTooltipPosition="above">
+                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75ZM12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                                    fill="#3273a8"></path>
+                            </g>
+                        </svg>
+                    </span>
                 </div>
                 <button class="btn btn-primary ml-2" [disabled]="!enableUpload" (click)="uploadBooks()">Upload</button>
+                <!-- button to clear the selected file -->
+                <button class="btn btn-secondary ml-2" (click)="clearFile()">Clear</button>
             </form>
             <div *ngIf="fileError" class="text-danger">{{ fileError }}</div> <!-- Error message -->
             <p *ngIf="selectedFile" class="text-info">{{selectedFile.name}}</p>
         </div>
     </div>
     <div class="searchBooksContainer">
-        <input type="text" class="form-control" placeholder="Search books" [(ngModel)]="searchText">
+        <input type="text" class="form-control" placeholder="Search books by ISBN" [(ngModel)]="searchText">
         <button class="btn btn-primary ml-2" (click)="searchBooks()">Search</button>
         <button class="btn btn-secondary ml-2" (click)="resetSearch()">Reset</button>
     </div>

@@ -34,3 +34,13 @@ p{
 .form-control{
     border: 1px solid #a09e9e !important;
 }
+
+.snack-bar-success .mat-mdc-simple-snack-bar {
+  background-color: #4caf50 !important; /* Green background for success */
+  color: #fff; /* White text */
+}
+
+.snack-bar-error .mat-mdc-simple-snack-bar {
+  background-color: #f44336 !important; /* Red background for error */
+  color: #fff; /* White text */
+}
