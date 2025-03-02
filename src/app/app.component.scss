@@ -1,21 +1,29 @@
-.footer{
-    position: absolute;
-    bottom: 0;
-    background: #4A90E2;
-    width: 100%;
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-.header{
-    background: #4A90E2 !important;
+.footer {
+  background: #4A90E2;
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
 }
 
-.appContent{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100vh;
+.header {
+  background: #4A90E2 !important;
 }
-.appContentInner{
-    margin-top: 20px;
+
+.appContent {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.appContentInner {
+  flex: 1;
+  margin-top: 20px;
 }
 
