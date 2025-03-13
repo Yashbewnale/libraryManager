@@ -15,6 +15,6 @@ export class AssignBookService {
   }
 
   getUserAssignedBooks(userId: string): any{
-    return this.http.get(`${this.uri}/searchStudent/${userId}`);
+    return this.http.get(`${this.uri}/searchStudentForBooks/${userId}`);
   }
 }
